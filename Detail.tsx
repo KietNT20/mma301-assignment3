@@ -16,6 +16,10 @@ import {
 } from "./types/param";
 import AnimatedView from "./components/AnimatedView";
 import { PAGE } from "./constant/pageName";
+import {
+  calculateAverageRating,
+  calculatePriceSale,
+} from "./utils/calculatePrice";
 
 type Props = {
   route: DetailScreenRouteProp;
@@ -78,15 +82,6 @@ const DetailScreen = ({ route, navigation }: Props) => {
     });
   };
 
-  const calculateAverageRating = () => {
-    if (!artTool.reviews || artTool.reviews.length === 0) return 0;
-    const totalStars = artTool.reviews.reduce(
-      (sum, review) => sum + review.star,
-      0
-    );
-    return totalStars / artTool.reviews.length;
-  };
-
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
@@ -117,7 +112,8 @@ const DetailScreen = ({ route, navigation }: Props) => {
     );
   };
 
-  const averageRating = calculateAverageRating();
+  const averageRating = calculateAverageRating(artTool.reviews);
+  const salePrice = calculatePriceSale(artTool.price, artTool.limitedTimeDeal);
 
   useEffect(() => {
     checkFavoriteStatus();
@@ -171,9 +167,20 @@ const DetailScreen = ({ route, navigation }: Props) => {
             </Text>
           </View>
           <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-2xl text-yellow-500 font-semibold">
-              ${artTool.price.toFixed(2)}
-            </Text>
+            {artTool.limitedTimeDeal > 0 ? (
+              <View className="flex-row items-center gap-3">
+                <Text className="text-lg font-semibold text-yellow-500">
+                  ${salePrice.toFixed(2)}
+                </Text>
+                <Text className="text-sm text-gray-500 line-through">
+                  ${artTool.price.toFixed(2)}
+                </Text>
+              </View>
+            ) : (
+              <Text className="text-lg font-semibold text-yellow-500">
+                ${artTool.price.toFixed(2)}
+              </Text>
+            )}
             {artTool.limitedTimeDeal > 0 && (
               <AnimatedView>
                 <View className="bg-red-500 px-3 py-2 rounded">

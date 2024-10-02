@@ -5,6 +5,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { PAGE } from "@/constant/pageName";
 import AnimatedView from "./AnimatedView";
+import {
+  calculateAverageRating,
+  calculatePriceSale,
+} from "@/utils/calculatePrice";
 
 const CardComp = ({
   artTool,
@@ -22,15 +26,6 @@ const CardComp = ({
   const handleBrandPress = (e: any) => {
     e.stopPropagation();
     onBrandPress!(artTool.brand);
-  };
-
-  const calculateAverageRating = () => {
-    if (!artTool.reviews || artTool.reviews.length === 0) return 0;
-    const totalStars = artTool.reviews.reduce(
-      (sum, review) => sum + review.star,
-      0
-    );
-    return totalStars / artTool.reviews.length;
   };
 
   const renderStars = (rating: number) => {
@@ -63,7 +58,8 @@ const CardComp = ({
     );
   };
 
-  const averageRating = calculateAverageRating();
+  const averageRating = calculateAverageRating(artTool.reviews);
+  const salePrice = calculatePriceSale(artTool.price, artTool.limitedTimeDeal);
 
   return (
     <Pressable onPress={handleCardPress}>
@@ -116,9 +112,20 @@ const CardComp = ({
               </View>
             </View>
             <View className="flex-row justify-between items-center mt-3">
-              <Text className="text-lg font-semibold text-yellow-500">
-                ${artTool.price.toFixed(2)}
-              </Text>
+              {artTool.limitedTimeDeal > 0 ? (
+                <View>
+                  <Text className="text-lg font-semibold text-yellow-500">
+                    ${salePrice.toFixed(2)}
+                  </Text>
+                  <Text className="text-sm text-gray-500 line-through">
+                    ${artTool.price.toFixed(2)}
+                  </Text>
+                </View>
+              ) : (
+                <Text className="text-lg font-semibold text-yellow-500">
+                  ${artTool.price.toFixed(2)}
+                </Text>
+              )}
               {artTool.limitedTimeDeal > 0 && (
                 <AnimatedView>
                   <View className="bg-red-500 px-3 py-2 rounded">
