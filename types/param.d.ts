@@ -26,3 +26,7 @@ declare type FeedbackScreenNavigationProp = NavigationProp<
   RootStackParamList,
   "Feedback"
 >;
+
+declare type ScreenRouteProp = Props["route"];
+
+declare type ScreenNavigationProp = Props["navigation"];

@@ -5,9 +5,9 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import DetailScreen from "./Detail";
+import FavoriteScreen from "./Favorite";
 import FeedbackScreen from "./Feedback";
 import HomeScreen from "./Home";
-import FavoriteScreen from "./Favorite";
 import { PAGE } from "./constant/pageName";
 
 const Tab = createBottomTabNavigator();

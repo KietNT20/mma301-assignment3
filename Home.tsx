@@ -1,21 +1,22 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import {
-  Text,
-  View,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
-import axios from "axios";
-import { BASE_URL } from "./api/api";
-import { ArtTool } from "./types/types";
-import CardComp from "./components/CardComp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
+import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+import { BASE_URL } from "./api/api";
+import CardComp from "./components/CardComp";
 import SearchBar from "./components/SearchBar";
+import { ScreenRouteProp } from "./types/param";
+import { ArtTool } from "./types/types";
 
 const HomeScreen = () => {
-  const route = useRoute();
+  const route = useRoute<ScreenRouteProp>();
   const [data, setData] = useState<ArtTool[]>([]);
   const [filteredData, setFilteredData] = useState<ArtTool[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ const HomeScreen = () => {
     try {
       const response = await axios.get(`${BASE_URL}/products`);
       setData(response.data);
-      const uniqueBrands = [
+      const uniqueBrands: any[] = [
         ...new Set(response.data.map((item: ArtTool) => item.brand)),
       ];
       setBrands(uniqueBrands);
@@ -108,7 +109,7 @@ const HomeScreen = () => {
 
   const renderFilterButton = useCallback(
     ({ item }: { item: string }) => (
-      <TouchableOpacity
+      <Pressable
         onPress={() => filterByBrand(item)}
         style={{
           paddingHorizontal: 16,
@@ -131,7 +132,7 @@ const HomeScreen = () => {
         >
           {item}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     ),
     [selectedBrand, filterByBrand]
   );

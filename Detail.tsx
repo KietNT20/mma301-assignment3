@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
-  Text,
+  Animated,
   Image,
   Pressable,
   SafeAreaView,
-  Animated,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AnimatedView from "./components/AnimatedView";
+import { PAGE } from "./constant/pageName";
 import {
   DetailScreenNavigationProp,
   DetailScreenRouteProp,
 } from "./types/param";
-import AnimatedView from "./components/AnimatedView";
-import { PAGE } from "./constant/pageName";
 import {
   calculateAverageRating,
   calculatePriceSale,

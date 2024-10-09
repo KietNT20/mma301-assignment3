@@ -13,11 +13,12 @@ import {
 import { BASE_URL } from "./api/api";
 import CardComp from "./components/CardComp";
 import SearchBar from "./components/SearchBar";
-import { ArtTool } from "./types/types";
 import { PAGE } from "./constant/pageName";
+import { ScreenNavigationProp } from "./types/param";
+import { ArtTool } from "./types/types";
 
 const FavoritesScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ScreenNavigationProp>();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoriteItems, setFavoriteItems] = useState<ArtTool[]>([]);
   const [filteredFavoriteItems, setFilteredFavoriteItems] = useState<ArtTool[]>(
@@ -120,9 +121,12 @@ const FavoritesScreen = () => {
     [navigation]
   );
 
-  const navigateToHome = useCallback(() => {
-    navigation.navigate("Home");
-  }, [navigation]);
+  const navigateToHomeAndFilterBrand = (brand: string) => {
+    navigation.navigate("HomeTab", {
+      screen: PAGE.HOME,
+      params: { selectedBrand: brand },
+    });
+  };
 
   const renderItem = useCallback(
     ({ item }: { item: ArtTool }) => (
@@ -131,10 +135,10 @@ const FavoritesScreen = () => {
         isFavorite={true}
         onFavoritePress={() => removeFavorite(item)}
         onPress={() => handleCardPress(item)}
-        onBrandPress={navigateToHome}
+        onBrandPress={navigateToHomeAndFilterBrand}
       />
     ),
-    [removeFavorite, handleCardPress, navigateToHome]
+    [removeFavorite, handleCardPress, navigateToHomeAndFilterBrand]
   );
 
   useFocusEffect(
