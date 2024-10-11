@@ -15,7 +15,6 @@ const CardComp = ({
   isFavorite,
   onFavoritePress,
   onBrandPress,
-  selectedBrand,
 }: CardCompProps) => {
   const navigation = useNavigation<any>();
 

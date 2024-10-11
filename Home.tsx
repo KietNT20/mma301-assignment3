@@ -29,6 +29,7 @@ const HomeScreen = () => {
   const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(`${BASE_URL}/products`);
+      // console.log(response.data);
       setData(response.data);
       const uniqueBrands: any[] = [
         ...new Set(response.data.map((item: ArtTool) => item.brand)),
@@ -148,6 +149,7 @@ const HomeScreen = () => {
   );
 
   useEffect(() => {
+    console.log("fetching data");
     fetchData();
   }, [fetchData]);
 
